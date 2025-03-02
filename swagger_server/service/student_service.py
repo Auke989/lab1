@@ -2,40 +2,43 @@ import os
 import tempfile
 from functools import reduce
 
-from tinydb import TinyDB, Query
+import pymongo
 
-db_dir_path = tempfile.gettempdir()
-db_file_path = os.path.join(db_dir_path, "students.json")
-student_db = TinyDB(db_file_path)
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["students_db"]
+mycol = mydb["students"]
 
 
 def add(student=None):
-    queries = []
-    query = Query()
-    queries.append(query.first_name == student.first_name)
-    queries.append(query.last_name == student.last_name)
-    query = reduce(lambda a, b: a & b, queries)
-    res = student_db.search(query)
+    if not student:
+        return "bad request", 400
+    student_dict = {"first_name": student.first_name,
+               "last_name": student.last_name}
+    res = mycol.find_one(student_dict)
     if res:
         return 'already exists', 409
 
-    doc_id = student_db.insert(student.to_dict())
-    student.student_id = doc_id
+    res = mycol.insert(student_dict)
+    student.student_id = res.inserted_id
     return student.student_id
 
 
 def get_by_id(student_id=None, subject=None):
-    student = student_db.get(doc_id=int(student_id))
+    if not student_id:
+        return "bad request", 400
+    student = mycol.find_one({"_id": student_id})
     if not student:
-        return 'not found', 404
-    student['student_id'] = student_id
+        return "not found", 404
+    student["student_id"] = str(student["_id"])
     print(student)
     return student
 
 
 def delete(student_id=None):
-    student = student_db.get(doc_id=int(student_id))
-    if not student:
-        return 'not found', 404
-    student_db.remove(doc_ids=[int(student_id)])
+    if not student_id:
+        return "bad request", 400
+    result = mycol.delete_one({"_id": student_id})
+    if result.deleted_count == 0:
+        return "not found", 404
+
     return student_id
