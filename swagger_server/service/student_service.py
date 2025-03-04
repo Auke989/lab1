@@ -1,5 +1,4 @@
-import os
-import tempfile
+import uuid
 from functools import reduce
 
 import pymongo
@@ -18,9 +17,10 @@ def add(student=None):
     if res:
         return 'already exists', 409
 
-    res = mycol.insert(student_dict)
-    student.student_id = res.inserted_id
-    return student.student_id
+    # Generate a UUID if required by Swagger
+    student_dict["student_id"] = str(uuid.uuid4())
+    res = mycol.insert_one(student_dict)
+    return student_dict["student_id"]
 
 
 def get_by_id(student_id=None, subject=None):
@@ -41,4 +41,4 @@ def delete(student_id=None):
     if result.deleted_count == 0:
         return "not found", 404
 
-    return student_id
+    return {"message": "Student deleted", "student_id": str(student_id)}
