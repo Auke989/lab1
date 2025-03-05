@@ -1,6 +1,6 @@
 services:
   student_service:
-    image: student_service
+    image: aukethewhitewhale/student_service
     restart: unless-stopped
     depends_on:
       - mongo
