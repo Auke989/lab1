@@ -29,10 +29,10 @@ def add(student=None):
 def get_by_id(student_id=None, subject=None):
     if not student_id:
         return "bad request", 400
-    student = mycol.find_one({"_id": student_id})
+    student = mycol.find_one({"student_id": student_id})
     if not student:
         return "not found", 404
-    student["student_id"] = str(student["_id"])
+    student["student_id"] = str(student["student_id"])
     print(student)
     return student
 
@@ -40,7 +40,7 @@ def get_by_id(student_id=None, subject=None):
 def delete(student_id=None):
     if not student_id:
         return "bad request", 400
-    result = mycol.delete_one({"_id": student_id})
+    result = mycol.delete_one({"student_id": student_id})
     if result.deleted_count == 0:
         return "not found", 404
 

@@ -19,7 +19,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = Student()
         response = self.client.open(
-            '/adew89/Tutorial/1.0.0/student',
+            '/tutorial/1.0.0/student',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
@@ -32,7 +32,7 @@ class TestDefaultController(BaseTestCase):
         deletes student
         """
         response = self.client.open(
-            '/adew89/Tutorial/1.0.0/student/{student_id}'.format(student_id=1.2),
+            '/tutorial/1.0.0/student/{student_id}'.format(student_id='student_id_example'),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -43,7 +43,7 @@ class TestDefaultController(BaseTestCase):
         gets student
         """
         response = self.client.open(
-            '/adew89/Tutorial/1.0.0/student/{student_id}'.format(student_id=1.2),
+            '/tutorial/1.0.0/student/{student_id}'.format(student_id='student_id_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
