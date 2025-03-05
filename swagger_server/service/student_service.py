@@ -17,7 +17,7 @@ def add(student=None):
         return 'already exists', 409
 
     # Generate a UUID if required by Swagger
-    student_dict["student_id"] = str(uuid.uuid4())
+    student_dict["student_id"] = str(mycol.count_documents({}))
     res = mycol.insert_one(student_dict)
     print("-============================================")
     print(student_dict["student_id"])
