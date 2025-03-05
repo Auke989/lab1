@@ -3,7 +3,7 @@ from functools import reduce
 
 import pymongo
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+myclient = pymongo.MongoClient("mongo", 27017)
 mydb = myclient["students_db"]
 mycol = mydb["students"]
 
@@ -11,8 +11,7 @@ mycol = mydb["students"]
 def add(student=None):
     if not student:
         return "bad request", 400
-    student_dict = {"first_name": student.first_name,
-               "last_name": student.last_name}
+    student_dict = {"first_name": student.first_name, "last_name": student.last_name}
     res = mycol.find_one(student_dict)
     if res:
         return 'already exists', 409
