@@ -22,7 +22,7 @@ def add_student(body=None):  # noqa: E501
     return 500, 'error'
 
 
-def delete_student(student_id):  # noqa: E501
+def delete_student(student_id = None):  # noqa: E501
     """deletes student
 
     delete a single student  # noqa: E501
@@ -38,7 +38,7 @@ def delete_student(student_id):  # noqa: E501
     return 500,'error'
 
 
-def get_student_by_id(student_id):  # noqa: E501
+def get_student_by_id(student_id=None):  # noqa: E501
     """gets student
 
     Returns a single student # noqa: E501

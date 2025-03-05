@@ -19,6 +19,10 @@ def add(student=None):
     # Generate a UUID if required by Swagger
     student_dict["student_id"] = str(uuid.uuid4())
     res = mycol.insert_one(student_dict)
+    print("-============================================")
+    print(student_dict["student_id"])
+    print(res)
+    print("-============================================")
     return student_dict["student_id"]
 
 
